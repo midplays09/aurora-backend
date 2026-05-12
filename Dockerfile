@@ -26,16 +26,9 @@ COPY . .
 RUN composer dump-autoload --optimize --no-interaction
 RUN composer run-script post-install-cmd --no-interaction || true
 
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 8000
 
-CMD mkdir -p config/jwt && \
-    if [ ! -f config/jwt/private.pem ]; then \
-    openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa \
-    -pkeyopt rsa_keygen_bits:4096 \
-    -pass pass:${JWT_PASSPHRASE} && \
-    openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem \
-    -pubout -passin pass:${JWT_PASSPHRASE}; \
-    fi && \
-    php bin/console cache:clear --env=prod --no-interaction && \
-    php -S 0.0.0.0:8000 -t public
+ENTRYPOINT ["docker-entrypoint.sh"]
