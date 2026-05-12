@@ -19,7 +19,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 COPY composer.json composer.lock* ./
 
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer update --no-dev --optimize-autoloader --no-interaction --no-audit
 
 COPY . .
 
