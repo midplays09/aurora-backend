@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Document\Category;
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\TrackRepository;
 use App\Security\InputSanitizer;

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Document\Track;
+use App\Entity\Track;
 use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 

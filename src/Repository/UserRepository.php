@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Document\User;
+use App\Entity\User;
 use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 

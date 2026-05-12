@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Document\Track;
+use App\Entity\Track;
 use App\Repository\TrackRepository;
 use App\Repository\CategoryRepository;
 use App\Security\InputSanitizer;

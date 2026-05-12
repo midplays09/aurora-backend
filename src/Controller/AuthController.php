@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Document\User;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Security\InputSanitizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

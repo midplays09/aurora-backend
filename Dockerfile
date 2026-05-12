@@ -5,7 +5,9 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libssl-dev \
+    libzip-dev \
     pkg-config \
+    && docker-php-ext-install zip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install MongoDB PHP extension
@@ -16,11 +18,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
+# Allow Composer to run as root
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Copy composer files first for better Docker caching
 COPY composer.json composer.lock* ./
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Copy the rest of the application
 COPY . .

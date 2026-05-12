@@ -1,13 +1,13 @@
 security:
     password_hashers:
-        App\Document\User:
+        App\Entity\User:
             algorithm: bcrypt
             cost: 13
 
     providers:
         app_user_provider:
             mongodb:
-                class: App\Document\User
+                class: App\Entity\User
                 property: email
 
     firewalls:

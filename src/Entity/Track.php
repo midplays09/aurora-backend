@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Document;
+namespace App\Entity;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;

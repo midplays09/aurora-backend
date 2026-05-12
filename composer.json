@@ -19,6 +19,7 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/monolog-bundle": "^3.10",
         "symfony/rate-limiter": "7.1.*",
+        "symfony/lock": "7.1.*",
         "symfony/runtime": "7.1.*",
         "symfony/security-bundle": "7.1.*",
         "symfony/serializer": "7.1.*",
@@ -50,7 +51,8 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd"
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": ["@auto-scripts"],
         "post-update-cmd": ["@auto-scripts"]

@@ -1,0 +1,11 @@
+vendor/
+var/
+config/jwt/*.pem
+.env.local
+.env.dev.local
+.env.test.local
+.env.prod.local
+docker-compose.yml
+Dockerfile
+.git/
+.gitignore
