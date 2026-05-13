@@ -34,10 +34,18 @@ class AuthController extends AbstractController
         }
 
         $email = $this->sanitizer->sanitizeEmail($data['email'] ?? null);
+        $username = $this->sanitizer->sanitize($data['username'] ?? null);
+        $username = $this->sanitizer->enforceMaxLength($username, 40);
         $plainPassword = $data['password'] ?? '';
 
         if (!$email) {
             return $this->json(['error' => 'Email is required.'], Response::HTTP_BAD_REQUEST);
+        }
+        if (!$username) {
+            return $this->json(['error' => 'Username is required.'], Response::HTTP_BAD_REQUEST);
+        }
+        if (!preg_match('/^[A-Za-z0-9_.-]{2,40}$/', $username)) {
+            return $this->json(['error' => 'Username must be 2-40 characters and can only contain letters, numbers, dots, underscores, and hyphens.'], Response::HTTP_BAD_REQUEST);
         }
 
         // Validate password strength
@@ -51,10 +59,14 @@ class AuthController extends AbstractController
         if ($existing !== null) {
             return $this->json(['error' => 'An account with this email already exists.'], Response::HTTP_CONFLICT);
         }
+        if ($this->userRepository->findByUsername($username) !== null) {
+            return $this->json(['error' => 'This username is already taken.'], Response::HTTP_CONFLICT);
+        }
 
         // Create user
         $user = new User();
         $user->setEmail($email);
+        $user->setUsername($username);
         $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));
 
         // Validate entity

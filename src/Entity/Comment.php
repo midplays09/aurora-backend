@@ -18,6 +18,9 @@ class Comment
     #[MongoDB\Field(type: 'string')]
     private ?string $userEmail = null;
 
+    #[MongoDB\Field(type: 'string', nullable: true)]
+    private ?string $username = null;
+
     #[MongoDB\Field(type: 'string')]
     private ?string $videoId = null;
 
@@ -61,6 +64,17 @@ class Comment
         return $this;
     }
 
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
+
     public function getVideoId(): ?string
     {
         return $this->videoId;
@@ -94,6 +108,8 @@ class Comment
             'id' => $this->id,
             'userId' => $this->userId,
             'userEmail' => $this->userEmail,
+            'username' => $this->username,
+            'displayName' => $this->username ?: (explode('@', (string) $this->userEmail)[0] ?: 'User'),
             'videoId' => $this->videoId,
             'text' => $this->text,
             'createdAt' => $this->createdAt?->format('c'),

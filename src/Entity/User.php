@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[MongoDB\Document(collection: 'users')]
 #[MongoDB\Index(keys: ['email' => 'asc'], options: ['unique' => true])]
+#[MongoDB\Index(keys: ['username' => 'asc'], options: ['unique' => true, 'sparse' => true])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[MongoDB\Id]
@@ -19,6 +20,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email(message: 'Please provide a valid email address.')]
     #[Assert\Length(max: 180, maxMessage: 'Email must be at most {{ limit }} characters.')]
     private ?string $email = null;
+
+    #[MongoDB\Field(type: 'string', nullable: true)]
+    #[Assert\Length(min: 2, max: 40)]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_.-]+$/', message: 'Username can only contain letters, numbers, dots, underscores, and hyphens.')]
+    private ?string $username = null;
 
     #[MongoDB\Field(type: 'string')]
     private ?string $password = null;
@@ -49,6 +55,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->email = strtolower(trim($email));
         return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?string $username): static
+    {
+        $username = $username !== null ? trim($username) : null;
+        $this->username = $username !== '' ? $username : null;
+        return $this;
+    }
+
+    public function getDisplayName(): string
+    {
+        if ($this->username) {
+            return $this->username;
+        }
+
+        return explode('@', (string) $this->email)[0] ?: 'User';
     }
 
     public function getUserIdentifier(): string
@@ -95,6 +122,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return [
             'id' => $this->id,
             'email' => $this->email,
+            'username' => $this->username,
+            'displayName' => $this->getDisplayName(),
             'roles' => $this->getRoles(),
             'createdAt' => $this->createdAt?->format('c'),
         ];

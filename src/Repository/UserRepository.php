@@ -21,6 +21,11 @@ class UserRepository extends ServiceDocumentRepository
         return $this->findOneBy(['email' => strtolower(trim($email))]);
     }
 
+    public function findByUsername(string $username): ?User
+    {
+        return $this->findOneBy(['username' => trim($username)]);
+    }
+
     public function save(User $user, bool $flush = true): void
     {
         $dm = $this->getDocumentManager();
