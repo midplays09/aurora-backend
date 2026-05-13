@@ -1,5 +1,6 @@
 vendor/
 var/
+/.env
 !.env.example
 .phpunit.result.cache
 phpunit.xml
